@@ -265,6 +265,7 @@
     </div>
 
     <script>
+        // --- 🎵 BGM ---
         const bgm = document.getElementById('bgm');
         const musicControl = document.getElementById('music-control');
         const startBtn = document.getElementById('startBtn');
@@ -293,6 +294,7 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
+        // --- 📸 갤러리 ---
         const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
         let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
 
@@ -326,6 +328,7 @@
         }
         function setGallery(index) { currentGalleryIndex = index; updateGalleryUI(); }
 
+        // --- ⚙️ 스크롤 애니메이션 ---
         document.addEventListener("DOMContentLoaded", function() {
             const faders = document.querySelectorAll('.fade-in');
             const appearOnScroll = new IntersectionObserver((entries, observer) => {
@@ -335,6 +338,7 @@
             initGallery(); renderMessages();
         });
 
+        // --- 📝 방명록 ---
         const STORAGE_KEY = 'skku_jeon_guestbook';
         function getMessages() { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
         function saveMessages(msgs) { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); }
@@ -360,12 +364,21 @@
             });
         }
 
+        // 🌟 수정된 핵심 코드: 방명록을 정확하게 저장합니다.
         function submitMessage(e) {
             e.preventDefault();
-            const name = document.getElementById('gbName').value.trim(); const password = document.getElementById('gbPassword').value.trim(); const content = document.getElementById('gbContent').value.trim();
+            const name = document.getElementById('gbName').value.trim(); 
+            const password = document.getElementById('gbPassword').value.trim(); 
+            const content = document.getElementById('gbContent').value.trim();
             if (!name || !password || !content) return;
-            getMessages().push({ id: Date.now(), name, password, content, date: new Date().toLocaleDateString('ko-KR') });
-            saveMessages(getMessages()); document.getElementById('guestbookForm').reset(); renderMessages();
+            
+            let msgs = getMessages();
+            msgs.push({ id: Date.now(), name: name, password: password, content: content, date: new Date().toLocaleDateString('ko-KR') });
+            saveMessages(msgs); 
+            
+            document.getElementById('guestbookForm').reset(); 
+            renderMessages();
+            alert("축하 메시지가 성공적으로 등록되었습니다!");
         }
 
         const modal = document.getElementById('deleteModal');
