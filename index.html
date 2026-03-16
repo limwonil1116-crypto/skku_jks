@@ -72,19 +72,14 @@
 
         <div class="bg-white h-[80px] md:h-[100px] flex items-center border-b border-gray-200">
             <div class="max-w-7xl mx-auto px-4 w-full flex items-center justify-between">
-                
                 <div class="hidden md:block w-1/3">
                     <span class="text-skku-blue text-xl font-light tracking-wide">Inspiring Future, Grand Challenge</span>
                 </div>
-
                 <div class="w-full md:w-1/3 flex justify-center items-center cursor-pointer" onclick="window.scrollTo(0,0)">
                     <img src="./logo.png" alt="성균관대학교" class="h-16 md:h-20 w-auto object-contain">
                 </div>
-
                 <div class="hidden md:flex w-1/3 justify-end gap-2">
-                    <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white hover:bg-skku-blue transition cursor-pointer">
-                        <span class="text-sm font-bold">in</span>
-                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white hover:bg-skku-blue transition cursor-pointer"><span class="text-sm font-bold">in</span></div>
                     <div class="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white hover:bg-pink-600 transition cursor-pointer">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     </div>
@@ -238,9 +233,10 @@
                 <div class="lg:col-span-2">
                     <div class="flex justify-between items-end mb-3 border-b border-gray-200 pb-2">
                         <h3 class="text-lg font-bold text-skku-green font-serif">축하 메시지</h3>
-                        <span id="messageCount" class="text-xs font-bold text-skku-blue">총 0개의 글</span>
+                        <span id="messageCount" class="text-xs font-bold text-skku-blue">로딩 중...</span>
                     </div>
-                    <div id="messageList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
+                    <div id="messageList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                        </div>
                 </div>
             </div>
         </div>
@@ -265,13 +261,16 @@
     </div>
 
     <script>
-        // --- 🎵 BGM ---
-        const bgm = document.getElementById('bgm');
-        const musicControl = document.getElementById('music-control');
-        const startBtn = document.getElementById('startBtn');
-        let isMusicPlaying = false;
+        // 🚨 [수작업 3] 3단계에서 복사한 웹앱 URL을 아래 따옴표 안에 넣어주세요! (아래는 예시입니다)
+        const GOOGLE_SCRIPT_URL = '여기에_웹앱_URL을_붙여넣으세요';
 
-        document.addEventListener("DOMContentLoaded", () => {
+        let guestbookMessages = []; // 불러온 데이터를 저장할 공간
+
+        // --- 초기 세팅 및 방명록 불러오기 ---
+        document.addEventListener("DOMContentLoaded", function() {
+            // 음악 초기화
+            const bgm = document.getElementById('bgm');
+            const musicControl = document.getElementById('music-control');
             bgm.play().then(() => { isMusicPlaying = true; musicControl.innerHTML = '🎵'; })
             .catch(() => {
                 document.body.addEventListener('click', function playAudio() {
@@ -279,14 +278,30 @@
                     document.body.removeEventListener('click', playAudio);
                 }, { once: true });
             });
+
+            // 애니메이션 및 갤러리 초기화
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
+            }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
+            faders.forEach(fader => appearOnScroll.observe(fader));
+            initGallery(); 
+
+            // 🌟 페이지 열리자마자 엑셀에서 방명록 데이터 싹 가져오기
+            fetchMessages(); 
         });
 
+        // --- 음악 제어 ---
+        let isMusicPlaying = false;
         function toggleMusic() {
+            const bgm = document.getElementById('bgm');
+            const musicControl = document.getElementById('music-control');
             if (isMusicPlaying) { bgm.pause(); musicControl.innerHTML = '🔇'; isMusicPlaying = false; } 
             else { bgm.play(); musicControl.innerHTML = '🎵'; isMusicPlaying = true; }
         }
 
         function startExperience() {
+            const startBtn = document.getElementById('startBtn');
             startBtn.innerHTML = '감사합니다'; 
             startBtn.classList.add('bg-white', 'text-skku-green', 'cursor-default');
             startBtn.classList.remove('bg-royal-gold', 'hover:bg-white', 'hover:-translate-y-1');
@@ -294,7 +309,7 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
-        // --- 📸 갤러리 ---
+        // --- 갤러리 로직 ---
         const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
         let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
 
@@ -328,28 +343,36 @@
         }
         function setGallery(index) { currentGalleryIndex = index; updateGalleryUI(); }
 
-        // --- ⚙️ 스크롤 애니메이션 ---
-        document.addEventListener("DOMContentLoaded", function() {
-            const faders = document.querySelectorAll('.fade-in');
-            const appearOnScroll = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
-            }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
-            faders.forEach(fader => appearOnScroll.observe(fader));
-            initGallery(); renderMessages();
-        });
+        // --- 🌟 스프레드시트 방명록 로직 🌟 ---
+        
+        // 1. 엑셀에서 데이터 불러오기
+        async function fetchMessages() {
+            try {
+                if(GOOGLE_SCRIPT_URL.includes('https://docs.google.com/spreadsheets/d/10QMdEMOObwT9sUUtae_h-U9qGrezroP3DxeBs12iXAU/edit?gid=0#gid=0')) return; // URL 안넣었을때 방지
+                const res = await fetch(GOOGLE_SCRIPT_URL);
+                guestbookMessages = await res.json();
+                renderMessages();
+            } catch(e) {
+                console.error("방명록 로딩 실패", e);
+                document.getElementById('messageCount').textContent = "불러오기 실패";
+            }
+        }
 
-        // --- 📝 방명록 ---
-        const STORAGE_KEY = 'skku_jeon_guestbook';
-        function getMessages() { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-        function saveMessages(msgs) { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); }
-
+        // 2. 화면에 예쁘게 그려주기
         function renderMessages() {
-            const messages = getMessages(); const listEl = document.getElementById('messageList');
-            document.getElementById('messageCount').textContent = `총 ${messages.length}개의 글`;
+            const listEl = document.getElementById('messageList');
+            document.getElementById('messageCount').textContent = `총 ${guestbookMessages.length}개의 글`;
             listEl.innerHTML = '';
-            if (messages.length === 0) { listEl.innerHTML = '<p class="text-center text-gray-400 py-8 text-sm">첫 번째 축하 메시지를 남겨주세요.</p>'; return; }
+            
+            if (guestbookMessages.length === 0) { 
+                listEl.innerHTML = '<p class="text-center text-gray-400 py-8 text-sm">첫 번째 축하 메시지를 남겨주세요.</p>'; 
+                return; 
+            }
 
-            messages.sort((a, b) => b.id - a.id).forEach(msg => {
+            // 최신 글이 맨 위로 오도록 정렬
+            const sortedMsgs = [...guestbookMessages].sort((a, b) => b.id - a.id);
+
+            sortedMsgs.forEach(msg => {
                 const item = document.createElement('div');
                 item.className = 'bg-white p-4 rounded-lg border border-gray-100 shadow-sm relative group hover:shadow-md transition-shadow';
                 item.innerHTML = `
@@ -364,32 +387,65 @@
             });
         }
 
-        // 🌟 수정된 핵심 코드: 방명록을 정확하게 저장합니다.
-        function submitMessage(e) {
+        // 3. 엑셀로 데이터 보내기 (글 등록)
+        async function submitMessage(e) {
             e.preventDefault();
+            const btn = document.querySelector('#guestbookForm button');
             const name = document.getElementById('gbName').value.trim(); 
             const password = document.getElementById('gbPassword').value.trim(); 
             const content = document.getElementById('gbContent').value.trim();
             if (!name || !password || !content) return;
-            
-            let msgs = getMessages();
-            msgs.push({ id: Date.now(), name: name, password: password, content: content, date: new Date().toLocaleDateString('ko-KR') });
-            saveMessages(msgs); 
-            
-            document.getElementById('guestbookForm').reset(); 
-            renderMessages();
-            alert("축하 메시지가 성공적으로 등록되었습니다!");
+
+            btn.disabled = true; btn.textContent = "등록 중..."; // 로딩 표시
+
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'insert', name: name, password: password, content: content })
+                });
+                
+                document.getElementById('guestbookForm').reset();
+                alert("축하 메시지가 성공적으로 등록되었습니다!");
+                await fetchMessages(); // 새 글 가져와서 화면 고침
+            } catch(error) {
+                alert("등록에 실패했습니다. 다시 시도해주세요.");
+            }
+            btn.disabled = false; btn.textContent = "등록하기";
         }
 
+        // 4. 모달창 및 삭제 로직
         const modal = document.getElementById('deleteModal');
         function openDeleteModal(id) { document.getElementById('deleteTargetId').value = id; document.getElementById('deletePassword').value = ''; modal.classList.remove('hidden'); }
         function closeDeleteModal() { modal.classList.add('hidden'); }
-        function confirmDelete() {
-            const id = parseInt(document.getElementById('deleteTargetId').value); const inputPw = document.getElementById('deletePassword').value;
-            let msgs = getMessages(); const targetMsg = msgs.find(m => m.id === id);
-            if (targetMsg && targetMsg.password === inputPw) { saveMessages(msgs.filter(m => m.id !== id)); closeDeleteModal(); renderMessages(); } 
-            else { alert("비밀번호가 일치하지 않습니다."); }
+        
+        async function confirmDelete() {
+            const id = document.getElementById('deleteTargetId').value; 
+            const password = document.getElementById('deletePassword').value;
+            if(!password) { alert("비밀번호를 입력해주세요."); return; }
+
+            const btn = document.querySelector('#deleteModal button.bg-red-600');
+            btn.disabled = true; btn.textContent = "삭제 중...";
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'delete', id: id, password: password })
+                });
+                const result = await res.json();
+                
+                if (result.result === 'success') {
+                    alert("성공적으로 삭제되었습니다.");
+                    closeDeleteModal();
+                    await fetchMessages(); // 삭제 후 새로고침
+                } else {
+                    alert("비밀번호가 일치하지 않습니다.");
+                }
+            } catch(e) {
+                alert("삭제 중 오류가 발생했습니다.");
+            }
+            btn.disabled = false; btn.textContent = "삭제";
         }
+
         function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'}[tag] || tag)); }
     </script>
 </body>
