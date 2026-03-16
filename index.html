@@ -3,157 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>전경수 교수님 정년퇴임 기념 방명록</title>
+    <title>성균관대학교 전경수 교수 정년퇴임 기념</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { serif: ['"Noto Serif KR"', 'serif'], sans: ['"Noto Sans KR"', 'sans-serif'] },
+                    colors: { 'skku-blue': '#003E74', 'skku-green': '#003E33', 'royal-gold': '#C5A059', 'bg-cream': '#Fdfbf7' }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #fdfbf7; }
-        .font-serif { font-family: 'Noto Serif KR', serif; }
+        body { background-color: #Fdfbf7; scroll-behavior: smooth; }
+        .fade-in { opacity: 0; transform: translateY(15px); transition: 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        #music-control {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 50;
+            background-color: #003E33; color: #C5A059; border: 2px solid #C5A059;
+            border-radius: 50%; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,62,51,0.4);
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="font-serif antialiased">
 
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-12">
-            <h1 class="font-serif text-4xl font-bold text-[#003E33] mb-4">전경수 교수님 퇴임 기념 방명록</h1>
-            <p class="text-gray-600">교수님의 새로운 앞날을 응원하며 감사의 한마디를 남겨주세요.</p>
-        </header>
+    <audio id="bgm" loop preload="auto">
+        <source src="https://archive.org/download/CanonInD_261/CanoninD.mp3" type="audio/mpeg">
+    </audio>
+    <button id="music-control" onclick="toggleMusic()">🔇</button>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="md:col-span-1 bg-white p-6 rounded-xl shadow-md border border-gray-100 h-fit">
-                <form id="guestbookForm" onsubmit="submitMessage(event)">
-                    <div class="mb-4">
-                        <label class="block text-sm font-bold mb-1">성함</label>
-                        <input type="text" id="gbName" required class="w-full border p-2 rounded text-sm outline-none focus:ring-2 focus:ring-[#003E33]">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-bold mb-1">비밀번호</label>
-                        <input type="password" id="gbPassword" required class="w-full border p-2 rounded text-sm outline-none focus:ring-2 focus:ring-[#003E33]">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-bold mb-1">내용</label>
-                        <textarea id="gbContent" rows="4" required class="w-full border p-2 rounded text-sm outline-none resize-none focus:ring-2 focus:ring-[#003E33]"></textarea>
-                    </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-[#003E33] text-white py-2 rounded font-bold hover:bg-[#002821] transition">메시지 남기기</button>
-                </form>
-            </div>
-
-            <div class="md:col-span-2">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-[#003E33]">남겨주신 메시지</h2>
-                    <span id="messageCount" class="text-sm font-bold text-gray-500">불러오는 중...</span>
-                </div>
-                <div id="messageList" class="space-y-4">
-                    </div>
+    <nav class="fixed top-0 w-full z-50 flex flex-col shadow-sm font-sans">
+        <div class="bg-skku-blue text-white h-10 flex items-center px-4 justify-end text-sm font-light">
+            <div class="space-x-5">
+                <a href="#hero" class="hover:text-royal-gold">홈</a>
+                <a href="#profile" class="hover:text-royal-gold">발자취</a>
+                <a href="#gallery" class="hover:text-royal-gold">추억</a>
+                <a href="#guestbook" class="font-bold hover:text-royal-gold">방명록</a>
             </div>
         </div>
-    </div>
+        <div class="bg-white h-[80px] flex items-center justify-center border-b"><img src="./logo.png" alt="성균관대학교" class="h-16"></div>
+    </nav>
 
-    <div id="deleteModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4">
-        <div class="bg-white p-6 rounded-lg max-w-sm w-full">
+    <header id="hero" class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-skku-green pt-20">
+        <div class="text-center px-4 fade-in visible">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                <span class="block text-xl text-royal-gold font-light mb-4 tracking-widest">존경과 감사의 마음을 담아</span>
+                전 경 수 <span class="text-2xl md:text-4xl text-gray-300 font-light">교수님</span>
+            </h1>
+            <p class="text-gray-200 text-lg max-w-2xl mx-auto mb-10 opacity-90 leading-relaxed">지난 30여 년간의 헌신과 열정에 진심으로 감사드립니다.<br>교수님의 새로운 앞날을 응원합니다.</p>
+        </div>
+    </header>
+
+    <section id="profile" class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="fade-in visible"><img src="./profile.jpg" alt="교수님 프로필" class="rounded-lg shadow-2xl border-4 border-white"></div>
+                <div class="fade-in visible font-sans">
+                    <h2 class="text-3xl font-bold text-skku-green mb-6 font-serif">교수님 연혁</h2>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex border-b pb-2"><span class="font-bold w-32">19xx - 19xx</span> <span>성균관대학교 토목공학과 졸업</span></li>
+                        <li class="flex border-b pb-2"><span class="font-bold w-32">19xx - 202x</span> <span>성균관대학교 수자원공학 교수</span></li>
+                        <li class="flex border-b pb-2"><span class="font-bold w-32">20xx - 20xx</span> <span>한국수자원학회 회장 역임</span></li>
+                        <li class="text-gray-500 italic mt-4">* 상세한 연혁은 실제 데이터로 수정해주세요.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-24 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-center text-3xl font-bold text-skku-green mb-12 font-serif">함께한 추억</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <img src="./photo1.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+                <img src="./photo2.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+                <img src="./photo3.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+                <img src="./photo4.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+                <img src="./photo5.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+                <img src="./photo6.jpg" class="h-64 w-full object-cover rounded shadow-md hover:scale-105 transition">
+            </div>
+        </div>
+    </section>
+
+    <section id="guestbook" class="py-24 bg-bg-cream font-sans">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12 font-serif">
+                <h2 class="text-3xl font-bold text-skku-green mb-3">방명록</h2>
+                <div class="w-12 h-1 bg-royal-gold mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 bg-white p-6 rounded-xl border shadow-sm h-fit">
+                    <form id="guestbookForm" onsubmit="submitMessage(event)">
+                        <input type="text" id="gbName" placeholder="성함" required class="w-full border p-2 mb-3 rounded text-sm outline-none focus:ring-1 focus:ring-skku-blue">
+                        <input type="password" id="gbPassword" placeholder="비밀번호" required class="w-full border p-2 mb-3 rounded text-sm outline-none focus:ring-1 focus:ring-skku-blue">
+                        <textarea id="gbContent" placeholder="교수님께 전할 감사의 인사를 남겨주세요." rows="4" required class="w-full border p-2 mb-4 rounded text-sm resize-none outline-none focus:ring-1 focus:ring-skku-blue"></textarea>
+                        <button type="submit" id="submitBtn" class="w-full bg-skku-blue text-white font-bold py-2.5 rounded hover:bg-skku-green transition">메시지 등록하기</button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div class="flex justify-between items-end mb-4 border-b pb-2">
+                        <h3 class="text-lg font-bold text-skku-green">축하 메시지</h3>
+                        <span id="messageCount" class="text-xs font-bold text-gray-500">불러오는 중...</span>
+                    </div>
+                    <div id="messageList" class="space-y-4 max-h-[600px] overflow-y-auto pr-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="deleteModal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center z-[100] backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-xl max-w-sm w-full">
             <h3 class="font-bold mb-4">비밀번호 확인</h3>
-            <input type="password" id="delPw" class="w-full border p-2 mb-4 rounded" placeholder="비밀번호 입력">
+            <input type="password" id="delPw" class="w-full border p-2 mb-4 rounded outline-none focus:ring-1 focus:ring-red-600">
             <input type="hidden" id="delId">
             <div class="flex justify-end gap-2">
-                <button onclick="closeModal()" class="px-4 py-2 text-gray-500">취소</button>
-                <button onclick="requestDelete()" class="px-4 py-2 bg-red-600 text-white rounded">삭제</button>
+                <button onclick="closeModal()" class="px-4 py-2 text-gray-400">취소</button>
+                <button onclick="requestDelete()" class="px-4 py-2 bg-red-600 text-white rounded">삭제하기</button>
             </div>
         </div>
     </div>
 
     <script>
-        // [수정] 본인의 구글 웹 앱 URL을 여기에 붙여넣으세요
+        // 1. [중요] 여기에 본인의 구글 웹 앱 URL을 붙여넣으세요
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFlykmVJqBrDFLacYgb9PuUAhyFXIZr3q0h0oWrIZzbPXZZ5rqnUB5Zs9yp-LK7k28/exec';
 
-        // 1. 메시지 불러오기 (JSONP)
+        let isPlaying = false;
+        function toggleMusic() {
+            const bgm = document.getElementById('bgm');
+            const btn = document.getElementById('music-control');
+            if (isPlaying) { bgm.pause(); btn.innerHTML = '🔇'; } 
+            else { bgm.play(); btn.innerHTML = '🎵'; }
+            isPlaying = !isPlaying;
+        }
+
+        // 데이터 불러오기 (JSONP)
         function fetchMessages() {
-            const callbackName = 'jsonp_' + Date.now();
-            window[callbackName] = function(data) {
+            const cb = 'jsonp_' + Date.now();
+            window[cb] = function(data) {
                 const list = document.getElementById('messageList');
                 document.getElementById('messageCount').textContent = `총 ${data.length}개`;
                 list.innerHTML = '';
                 data.reverse().forEach(msg => {
                     const div = document.createElement('div');
-                    div.className = 'bg-white p-4 rounded-lg shadow-sm border border-gray-50 relative group';
+                    div.className = 'bg-white p-5 rounded-lg border shadow-sm relative group hover:border-royal-gold transition';
                     div.innerHTML = `
-                        <div class="flex justify-between text-xs text-gray-400 mb-2">
-                            <span class="font-bold text-[#003E33] text-sm">${msg.name}</span>
-                            <span>${msg.date}</span>
+                        <div class="flex justify-between text-xs mb-2">
+                            <span class="font-bold text-skku-blue text-sm">${msg.name}</span>
+                            <span class="text-gray-400">${msg.date}</span>
                         </div>
                         <p class="text-sm text-gray-700 whitespace-pre-wrap">${msg.content}</p>
-                        <button onclick="openModal('${msg.id}')" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">✕</button>
-                    `;
+                        <button onclick="openModal('${msg.id}')" class="absolute top-3 right-3 text-gray-200 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">✕</button>`;
                     list.appendChild(div);
                 });
-                delete window[callbackName];
+                delete window[cb];
             };
-
-            const script = document.createElement('script');
-            script.src = `${GOOGLE_SCRIPT_URL}?action=read&callback=${callbackName}`;
-            document.body.appendChild(script);
-            document.body.removeChild(script);
+            const s = document.createElement('script');
+            s.src = `${GOOGLE_SCRIPT_URL}?action=read&callback=${cb}`;
+            document.body.appendChild(s); document.body.removeChild(s);
         }
 
-        // 2. 메시지 등록 (JSONP)
+        // 데이터 등록 (JSONP)
         function submitMessage(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const name = document.getElementById('gbName').value;
             const pw = document.getElementById('gbPassword').value;
             const ct = document.getElementById('gbContent').value;
-            const callbackName = 'jsonp_' + Date.now();
+            const cb = 'jsonp_' + Date.now();
 
-            btn.disabled = true;
-            btn.textContent = "등록 중...";
-
-            window[callbackName] = function(res) {
-                if(res.result === 'success') {
-                    alert("메시지가 등록되었습니다.");
-                    document.getElementById('guestbookForm').reset();
-                    fetchMessages();
-                }
-                btn.disabled = false;
-                btn.textContent = "메시지 남기기";
-                delete window[callbackName];
+            btn.disabled = true; btn.textContent = "등록 중...";
+            window[cb] = function(res) {
+                if(res.result === 'success') { alert("메시지가 소중히 전달되었습니다."); document.getElementById('guestbookForm').reset(); fetchMessages(); }
+                btn.disabled = false; btn.textContent = "메시지 등록하기";
+                delete window[cb];
             };
-
-            const script = document.createElement('script');
-            script.src = `${GOOGLE_SCRIPT_URL}?action=insert&name=${encodeURIComponent(name)}&password=${encodeURIComponent(pw)}&content=${encodeURIComponent(ct)}&callback=${callbackName}`;
-            document.body.appendChild(script);
-            document.body.removeChild(script);
+            const s = document.createElement('script');
+            s.src = `${GOOGLE_SCRIPT_URL}?action=insert&name=${encodeURIComponent(name)}&password=${encodeURIComponent(pw)}&content=${encodeURIComponent(ct)}&callback=${cb}`;
+            document.body.appendChild(s); document.body.removeChild(s);
         }
 
-        // 3. 메시지 삭제 (JSONP)
-        function openModal(id) {
-            document.getElementById('delId').value = id;
-            document.getElementById('delPw').value = '';
-            document.getElementById('deleteModal').classList.remove('hidden');
-        }
+        function openModal(id) { document.getElementById('delId').value = id; document.getElementById('deleteModal').classList.remove('hidden'); }
         function closeModal() { document.getElementById('deleteModal').classList.add('hidden'); }
-
         function requestDelete() {
             const id = document.getElementById('delId').value;
             const pw = document.getElementById('delPw').value;
-            const callbackName = 'jsonp_' + Date.now();
-
-            window[callbackName] = function(res) {
-                if(res.result === 'success') {
-                    alert("삭제되었습니다.");
-                    closeModal();
-                    fetchMessages();
-                } else {
-                    alert("비밀번호가 틀립니다.");
-                }
-                delete window[callbackName];
+            const cb = 'jsonp_' + Date.now();
+            window[cb] = function(res) {
+                if(res.result === 'success') { alert("삭제되었습니다."); closeModal(); fetchMessages(); }
+                else { alert("비밀번호가 일치하지 않습니다."); }
+                delete window[cb];
             };
-
-            const script = document.createElement('script');
-            script.src = `${GOOGLE_SCRIPT_URL}?action=delete&id=${id}&password=${encodeURIComponent(pw)}&callback=${callbackName}`;
-            document.body.appendChild(script);
-            document.body.removeChild(script);
+            const s = document.createElement('script');
+            s.src = `${GOOGLE_SCRIPT_URL}?action=delete&id=${id}&password=${encodeURIComponent(pw)}&callback=${cb}`;
+            document.body.appendChild(s); document.body.removeChild(s);
         }
 
-        // 초기 실행
         fetchMessages();
     </script>
 </body>
