@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성균관대학교 전경수 교수 정년퇴임 기념</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { serif: ['"Noto Serif KR"', 'serif'] },
+                    colors: { 'skku-green': '#003E33', 'royal-gold': '#C5A059', 'midnight': '#111827' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #faf9f6; scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 5px; }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 1s, transform 1s; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        #music-control {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 50;
+            background-color: #111827; color: #C5A059; border: 2px solid #C5A059;
+            border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        #music-control:hover { transform: scale(1.1); background-color: #C5A059; color: #111827; }
+    </style>
+</head>
+<body class="font-serif text-gray-800 antialiased selection:bg-royal-gold selection:text-white">
+
+    <audio id="bgm" loop preload="auto" autoplay>
+        <source src="https://archive.org/download/CanonInD_261/CanoninD.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-control" onclick="toggleMusic()" title="Play/Pause Background Music">🔇</button>
+
+    <nav class="fixed top-0 w-full bg-midnight/95 backdrop-blur-sm z-40 border-b border-royal-gold/30">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    
+                    <img src="./logo.png" alt="SKKU Logo" class="h-10 w-auto object-contain">
+                         
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#hero" class="text-gray-300 hover:text-royal-gold px-3 py-2 rounded-md text-sm transition-colors">홈</a>
+                        <a href="#profile" class="text-gray-300 hover:text-royal-gold px-3 py-2 rounded-md text-sm transition-colors">발자취</a>
+                        <a href="#gallery" class="text-gray-300 hover:text-royal-gold px-3 py-2 rounded-md text-sm transition-colors">갤러리</a>
+                        <a href="#video" class="text-gray-300 hover:text-royal-gold px-3 py-2 rounded-md text-sm transition-colors">기념 영상</a>
+                        <a href="#guestbook" class="text-gray-300 hover:text-royal-gold px-3 py-2 rounded-md text-sm transition-colors">방명록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="hero" class="relative min-h-screen flex items-center justify-center bg-midnight overflow-hidden pt-16">
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#C5A059 1px, transparent 1px); background-size: 40px 40px;"></div>
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8 mt-10">
+                <span class="block text-2xl md:text-3xl text-gray-400 font-light mb-4">존경과 감사의 마음을 담아</span>
+                전 경 수 <span class="text-3xl md:text-5xl text-royal-gold font-light">교수님</span>
+            </h1>
+            <div class="w-24 h-1 bg-royal-gold mx-auto mb-8"></div>
+            <p class="text-gray-300 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto mb-10">
+                지난 30여 년간 후학 양성과 수자원 학문 발전을 위해 헌신하신<br class="hidden md:block">
+                교수님의 명예로운 퇴임을 진심으로 축하드립니다.<br>
+                새롭게 시작되는 교수님의 아름다운 여정을 응원합니다.
+            </p>
+            <button onclick="startExperience()" id="startBtn" class="bg-skku-green border border-royal-gold hover:bg-[#002821] text-royal-gold font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(0,62,51,0.8)] transition-all duration-300 transform hover:-translate-y-1">
+                기념관 둘러보기
+            </button>
+        </div>
+    </header>
+
+    <section id="profile" class="py-24 bg-white relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">학문의 발자취</h2>
+                <div class="w-16 h-[2px] bg-royal-gold mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">성균관대학교 건설환경공학부에서 수자원 분야의 발전과 후학 양성에 헌신하신 전경수 교수님의 귀중한 발자취입니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 fade-in">
+                <div class="md:col-span-4 flex flex-col items-center">
+                    <div class="w-full max-w-sm aspect-[3/4] bg-gray-100 rounded-2xl overflow-hidden shadow-xl mb-6 relative border-4 border-gray-100 flex items-center justify-center">
+                        
+                        <img src="./profile.jpg" alt="전경수 교수님" class="w-full h-full object-cover relative z-10">
+
+                    </div>
+                    <h3 class="text-2xl font-bold text-midnight mb-1">전 경 수 <span class="text-lg font-normal text-gray-500">교수</span></h3>
+                    <p class="text-skku-green font-semibold">성균관대학교 건설환경공학부</p>
+                </div>
+
+                <div class="md:col-span-8 space-y-8">
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-royal-gold shadow-sm"><h4 class="text-xl font-bold mb-4">🎓 학력</h4><ul class="space-y-3"><li>1989 미국 Colorado State University (공학박사)</li><li>1983 서울대학교 토목공학과 (공학석사)</li><li>1981 서울대학교 토목공학과 (공학사)</li></ul></div>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-skku-green shadow-sm"><h4 class="text-xl font-bold mb-4">🏛️ 주요 경력</h4><ul class="space-y-3"><li>1995 ~ 2026 성균관대학교 건설환경공학부 교수</li><li>2017 ~ 2018 한국수자원학회 회장</li><li>2013 ~ 2014 성균관대학교 공과대학장</li><li>1989 ~ 1995 한국건설기술연구원 수석연구원</li></ul></div>
+                    <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-midnight shadow-sm"><h4 class="text-xl font-bold mb-4">🔬 주요 연구 분야</h4><div class="flex flex-wrap gap-2 mt-2"><span class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">수문학 (Hydrology)</span><span class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">수자원공학 (Water Resources Engineering)</span><span class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">기후변화 영향 평가</span><span class="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm">홍수 방어 및 재해 예방</span></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-24 bg-gray-50 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">퇴임식 갤러리</h2>
+                <div class="w-16 h-[2px] bg-royal-gold mx-auto mb-6"></div>
+                
+                <a href="https://drive.google.com/file/d/1_Ez1D6w4tdtmtEJ7dPaFkxjhNmZUc9wJ/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-midnight text-royal-gold px-8 py-3 rounded-md font-bold hover:bg-gray-800 transition-colors shadow-lg mt-4">
+                    <span class="text-xl">💾</span> 전체 사진 일괄 다운로드
+                </a>
+            </div>
+
+            <div class="max-w-5xl mx-auto fade-in">
+                <div class="relative overflow-hidden rounded-xl shadow-2xl bg-white border border-gray-200 group aspect-[16/10] md:aspect-[21/9]">
+                    <div id="gallery-track" class="flex transition-transform duration-500 ease-in-out h-full w-full bg-black"></div>
+                    <button onclick="moveGallery(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-midnight/50 text-white p-3 rounded-full hover:bg-midnight/90 opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button onclick="moveGallery(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-midnight/50 text-white p-3 rounded-full hover:bg-midnight/90 opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3" id="gallery-dots"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="video" class="py-24 bg-midnight text-white relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-royal-gold mb-4">기념 영상</h2>
+            <div class="w-16 h-[2px] bg-royal-gold mx-auto mb-6"></div>
+            
+            <a href="https://drive.google.com/file/d/1_Ez1D6w4tdtmtEJ7dPaFkxjhNmZUc9wJ/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="block bg-gray-900 border border-royal-gold/30 rounded-xl p-10 hover:bg-gray-800 transition-all shadow-2xl mt-10">
+                <div class="w-20 h-20 mx-auto bg-royal-gold/20 rounded-full flex items-center justify-center mb-6"><span class="text-4xl">▶️</span></div>
+                <h3 class="text-2xl font-bold mb-2">퇴임 기념 영상 보기</h3>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // 음악 자동 재생
+        const bgm = document.getElementById('bgm');
+        const musicControl = document.getElementById('music-control');
+        const startBtn = document.getElementById('startBtn');
+        let isMusicPlaying = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            bgm.play().then(() => { isMusicPlaying = true; musicControl.innerHTML = '🎵'; })
+            .catch(() => {
+                document.body.addEventListener('click', function playAudio() {
+                    if(!isMusicPlaying) { bgm.play(); isMusicPlaying = true; musicControl.innerHTML = '🎵'; }
+                    document.body.removeEventListener('click', playAudio);
+                }, { once: true });
+            });
+        });
+
+        function toggleMusic() {
+            if (isMusicPlaying) { bgm.pause(); musicControl.innerHTML = '🔇'; isMusicPlaying = false; } 
+            else { bgm.play(); musicControl.innerHTML = '🎵'; isMusicPlaying = true; }
+        }
+
+        function startExperience() {
+            startBtn.innerHTML = '환영합니다'; startBtn.disabled = true;
+            window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+        }
+
+        // 🌟 3. 갤러리 사진 목록
+        const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
+        let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
+
+        function initGallery() {
+            const track = document.getElementById('gallery-track'); const dotsContainer = document.getElementById('gallery-dots');
+            track.innerHTML = ''; dotsContainer.innerHTML = '';
+            photoList.forEach((photoFileName, index) => {
+                const slide = document.createElement('div'); slide.className = 'min-w-full h-full flex items-center justify-center bg-black relative';
+                slide.innerHTML = `<img src="./${photoFileName}" alt="갤러리 사진" class="w-full h-full object-contain">`;
+                track.appendChild(slide);
+                const dot = document.createElement('button');
+                dot.className = index === 0 ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/70';
+                dot.onclick = () => setGallery(index); dotsContainer.appendChild(dot);
+            });
+            updateGalleryUI();
+        }
+
+        function updateGalleryUI() {
+            document.getElementById('gallery-track').style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
+            const dots = document.getElementById('gallery-dots').children;
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = i === currentGalleryIndex ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/70 hover:bg-white';
+            }
+        }
+
+        function moveGallery(dir) {
+            currentGalleryIndex += dir;
+            if (currentGalleryIndex >= totalGallerySlides) currentGalleryIndex = 0;
+            if (currentGalleryIndex < 0) currentGalleryIndex = totalGallerySlides - 1;
+            updateGalleryUI();
+        }
+        function setGallery(index) { currentGalleryIndex = index; updateGalleryUI(); }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
+            }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+            faders.forEach(fader => appearOnScroll.observe(fader));
+            initGallery(); 
+        });
+    </script>
+</body>
+</html>
