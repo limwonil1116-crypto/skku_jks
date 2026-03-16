@@ -50,7 +50,6 @@
     <audio id="bgm" loop preload="auto" autoplay>
         <source src="https://archive.org/download/CanonInD_261/CanoninD.mp3" type="audio/mpeg">
     </audio>
-
     <button id="music-control" onclick="toggleMusic()" title="음악 재생/정지">🔇</button>
 
     <nav class="fixed top-0 w-full z-50 flex flex-col shadow-sm font-sans">
@@ -168,22 +167,27 @@
 
     <section id="gallery" class="py-16 md:py-20 bg-white relative">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10 fade-in">
+            <div class="text-center mb-8 fade-in">
                 <h2 class="text-3xl font-bold text-skku-green mb-3">퇴임식 갤러리</h2>
                 <div class="w-12 h-1 bg-royal-gold mx-auto mb-4"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto mb-6 text-sm md:text-base">아름다웠던 퇴임식 현장의 감동을 사진첩처럼 넘겨보실 수 있습니다.</p>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-4 text-sm md:text-base">아름다웠던 퇴임식 현장의 감동을 사진첩처럼 넘겨보실 수 있습니다.</p>
                 
-                <a href="여기에_사진_링크_넣기" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-skku-green text-royal-gold px-6 py-2.5 rounded-full font-bold hover:bg-skku-green-dark transition-colors shadow-md text-sm md:text-base font-sans">
-                    <span>💾 전체 사진 일괄 다운로드</span>
-                </a>
+                <div class="flex flex-wrap justify-center gap-3 mt-4">
+                    <a href="여기에_사진_링크_넣기" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-skku-green text-royal-gold px-6 py-2.5 rounded-full font-bold hover:bg-skku-green-dark transition-colors shadow-md text-sm md:text-base font-sans">
+                        <span>💾 전체 사진 다운로드</span>
+                    </a>
+                    <button onclick="sharePage()" class="inline-flex items-center gap-2 bg-[#FEE500] text-[#000000] px-6 py-2.5 rounded-full font-bold hover:bg-[#FADA0A] transition-colors shadow-md text-sm md:text-base font-sans">
+                        <span>💬 페이지 공유하기</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="max-w-5xl mx-auto fade-in">
-                <div class="relative overflow-hidden rounded-xl shadow-xl bg-gray-100 border border-gray-200 group aspect-[16/10] md:aspect-[21/9]">
+            <div class="max-w-6xl mx-auto fade-in mt-8">
+                <div class="relative overflow-hidden rounded-xl shadow-xl bg-gray-100 border border-gray-200 group aspect-[4/3] md:aspect-[16/9]">
                     <div id="gallery-track" class="flex transition-transform duration-500 ease-in-out h-full w-full bg-black"></div>
-                    <button onclick="moveGallery(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
-                    <button onclick="moveGallery(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
-                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="gallery-dots"></div>
+                    <button onclick="moveGallery(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button onclick="moveGallery(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3" id="gallery-dots"></div>
                 </div>
             </div>
         </div>
@@ -262,13 +266,12 @@
     </div>
 
     <script>
-        // 🚨 [수작업 3] 방금 [새 배포]를 통해 발급받은 '웹앱 URL'을 넣어주세요! (따옴표 유지)
+        // 🚨 [수작업 3] 아래 주소를 삭제하지 말고 그대로 두시면 됩니다!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFlykmVJqBrDFLacYgb9PuUAhyFXIZr3q0h0oWrIZzbPXZZ5rqnUB5Zs9yp-LK7k28/exec';
 
         let guestbookMessages = []; 
 
         document.addEventListener("DOMContentLoaded", function() {
-            // 음악 자동재생 세팅
             const bgm = document.getElementById('bgm');
             const musicControl = document.getElementById('music-control');
             bgm.play().then(() => { isMusicPlaying = true; musicControl.innerHTML = '🎵'; })
@@ -279,21 +282,32 @@
                 }, { once: true });
             });
 
-            // 페이드인 애니메이션
             const faders = document.querySelectorAll('.fade-in');
             const appearOnScroll = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
             }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
             faders.forEach(fader => appearOnScroll.observe(fader));
             
-            // 갤러리 슬라이더 초기화
             initGallery(); 
-
-            // 엑셀에서 방명록 데이터 불러오기 (JSONP)
             fetchMessages(); 
         });
 
-        // BGM 컨트롤
+        // 공유하기 기능 (스마트폰 카톡 연결 등)
+        function sharePage() {
+            const shareData = {
+                title: '전경수 교수님 정년퇴임 기념관',
+                text: '성균관대학교 전경수 교수님의 정년퇴임을 축하하는 뜻깊은 자리에 초대합니다.',
+                url: window.location.href
+            };
+            if (navigator.share) {
+                navigator.share(shareData).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('페이지 링크가 복사되었습니다! 카카오톡 등에 붙여넣기 해주세요.');
+                });
+            }
+        }
+
         let isMusicPlaying = false;
         function toggleMusic() {
             const bgm = document.getElementById('bgm');
@@ -302,7 +316,6 @@
             else { bgm.play(); musicControl.innerHTML = '🎵'; isMusicPlaying = true; }
         }
 
-        // 버튼 클릭시 화면 이동
         function startExperience() {
             const startBtn = document.getElementById('startBtn');
             startBtn.innerHTML = '감사합니다'; 
@@ -312,7 +325,6 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
-        // 갤러리 슬라이더 로직
         const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
         let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
 
@@ -324,7 +336,7 @@
                 slide.innerHTML = `<img src="./${photoFileName}" alt="갤러리 사진" class="w-full h-full object-contain">`;
                 track.appendChild(slide);
                 const dot = document.createElement('button');
-                dot.className = index === 0 ? 'w-2.5 h-2.5 rounded-full bg-royal-gold' : 'w-2.5 h-2.5 rounded-full bg-white/50';
+                dot.className = index === 0 ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/50 hover:bg-white';
                 dot.onclick = () => setGallery(index); dotsContainer.appendChild(dot);
             });
             updateGalleryUI();
@@ -334,7 +346,7 @@
             document.getElementById('gallery-track').style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
             const dots = document.getElementById('gallery-dots').children;
             for (let i = 0; i < dots.length; i++) {
-                dots[i].className = i === currentGalleryIndex ? 'w-2.5 h-2.5 rounded-full bg-royal-gold' : 'w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white';
+                dots[i].className = i === currentGalleryIndex ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/50 hover:bg-white';
             }
         }
 
@@ -380,10 +392,10 @@
                 item.innerHTML = `
                     <div class="flex justify-between items-center mb-1">
                         <div class="font-bold text-sm text-skku-blue">${escapeHTML(msg.name)}</div>
-                        <div class="text-[10px] text-gray-400">${msg.date}</div>
+                        <div class="text-[10px] text-gray-400">${escapeHTML(msg.date)}</div>
                     </div>
                     <p class="text-gray-700 whitespace-pre-wrap text-xs md:text-sm leading-relaxed">${escapeHTML(msg.content)}</p>
-                    <button onclick="openDeleteModal('${msg.id}')" class="absolute top-3 right-3 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition" title="삭제">✕</button>
+                    <button onclick="openDeleteModal('${escapeHTML(msg.id)}')" class="absolute top-3 right-3 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition" title="삭제">✕</button>
                 `;
                 listEl.appendChild(item);
             });
@@ -449,7 +461,11 @@
             setTimeout(() => { if (document.body.contains(s)) document.body.removeChild(s); }, 1000);
         }
 
-        function escapeHTML(str) { return str.replace(/[&<>'"]/g, tag => ({'&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'}[tag] || tag)); }
+        // 🌟 [핵심] 숫자가 들어와도 문자열로 안전하게 변환하여 에러 방지
+        function escapeHTML(str) { 
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'}[tag] || tag)); 
+        }
     </script>
 </body>
 </html>
