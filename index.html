@@ -236,7 +236,7 @@
                         <span id="messageCount" class="text-xs font-bold text-skku-blue">로딩 중...</span>
                     </div>
                     <div id="messageList" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,14 +261,12 @@
     </div>
 
     <script>
-        // 🚨 [수작업 3] 3단계에서 복사한 웹앱 URL을 아래 따옴표 안에 넣어주세요! (아래는 예시입니다)
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAfrOrE3GIalES_nZ-ON0Fimn62uh_VCKPcuepsNTU6rAJzUcs6KEn8lr0uoJ1n33N/exec';
+        // 🚨 [수작업 3] 방금 [새 배포]를 통해 발급받은 '새 웹앱 URL'을 넣어주세요!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLIjLGfHu2SN-tI05PkN_12DlNpnGiBuK9J7COmpbYQXPaJkRgbRB37XNORN-shZZf/exec';
 
-        let guestbookMessages = []; // 불러온 데이터를 저장할 공간
+        let guestbookMessages = []; 
 
-        // --- 초기 세팅 및 방명록 불러오기 ---
         document.addEventListener("DOMContentLoaded", function() {
-            // 음악 초기화
             const bgm = document.getElementById('bgm');
             const musicControl = document.getElementById('music-control');
             bgm.play().then(() => { isMusicPlaying = true; musicControl.innerHTML = '🎵'; })
@@ -279,7 +277,6 @@
                 }, { once: true });
             });
 
-            // 애니메이션 및 갤러리 초기화
             const faders = document.querySelectorAll('.fade-in');
             const appearOnScroll = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => { if(entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
@@ -287,11 +284,10 @@
             faders.forEach(fader => appearOnScroll.observe(fader));
             initGallery(); 
 
-            // 🌟 페이지 열리자마자 엑셀에서 방명록 데이터 싹 가져오기
+            // 엑셀에서 방명록 데이터 불러오기
             fetchMessages(); 
         });
 
-        // --- 음악 제어 ---
         let isMusicPlaying = false;
         function toggleMusic() {
             const bgm = document.getElementById('bgm');
@@ -309,7 +305,6 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
-        // --- 갤러리 로직 ---
         const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
         let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
 
@@ -343,12 +338,10 @@
         }
         function setGallery(index) { currentGalleryIndex = index; updateGalleryUI(); }
 
-        // --- 🌟 스프레드시트 방명록 로직 🌟 ---
-        
-        // 1. 엑셀에서 데이터 불러오기
+        // --- 🌟 엽서(GET) 방식 통신 ---
         async function fetchMessages() {
             try {
-                if(GOOGLE_SCRIPT_URL.includes('https://docs.google.com/spreadsheets/d/10QMdEMOObwT9sUUtae_h-U9qGrezroP3DxeBs12iXAU/edit?gid=0#gid=0')) return; // URL 안넣었을때 방지
+                if(!GOOGLE_SCRIPT_URL.startsWith('http')) return; 
                 const res = await fetch(GOOGLE_SCRIPT_URL);
                 guestbookMessages = await res.json();
                 renderMessages();
@@ -358,7 +351,6 @@
             }
         }
 
-        // 2. 화면에 예쁘게 그려주기
         function renderMessages() {
             const listEl = document.getElementById('messageList');
             document.getElementById('messageCount').textContent = `총 ${guestbookMessages.length}개의 글`;
@@ -369,7 +361,6 @@
                 return; 
             }
 
-            // 최신 글이 맨 위로 오도록 정렬
             const sortedMsgs = [...guestbookMessages].sort((a, b) => b.id - a.id);
 
             sortedMsgs.forEach(msg => {
@@ -387,7 +378,6 @@
             });
         }
 
-        // 3. 엑셀로 데이터 보내기 (글 등록)
         async function submitMessage(e) {
             e.preventDefault();
             const btn = document.querySelector('#guestbookForm button');
@@ -396,24 +386,27 @@
             const content = document.getElementById('gbContent').value.trim();
             if (!name || !password || !content) return;
 
-            btn.disabled = true; btn.textContent = "등록 중..."; // 로딩 표시
+            btn.disabled = true; btn.textContent = "등록 중..."; 
 
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'insert', name: name, password: password, content: content })
-                });
+                // 🌟 URL 뒤에 데이터를 엽서처럼 붙여서(GET) 보냅니다.
+                const url = GOOGLE_SCRIPT_URL + `?action=insert&name=${encodeURIComponent(name)}&password=${encodeURIComponent(password)}&content=${encodeURIComponent(content)}`;
+                const res = await fetch(url);
+                const result = await res.json();
                 
-                document.getElementById('guestbookForm').reset();
-                alert("축하 메시지가 성공적으로 등록되었습니다!");
-                await fetchMessages(); // 새 글 가져와서 화면 고침
+                if (result.result === 'success') {
+                    document.getElementById('guestbookForm').reset();
+                    alert("축하 메시지가 성공적으로 등록되었습니다!");
+                    await fetchMessages(); 
+                } else {
+                    alert("등록에 실패했습니다.");
+                }
             } catch(error) {
-                alert("등록에 실패했습니다. 다시 시도해주세요.");
+                alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
             btn.disabled = false; btn.textContent = "등록하기";
         }
 
-        // 4. 모달창 및 삭제 로직
         const modal = document.getElementById('deleteModal');
         function openDeleteModal(id) { document.getElementById('deleteTargetId').value = id; document.getElementById('deletePassword').value = ''; modal.classList.remove('hidden'); }
         function closeDeleteModal() { modal.classList.add('hidden'); }
@@ -427,16 +420,14 @@
             btn.disabled = true; btn.textContent = "삭제 중...";
 
             try {
-                const res = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'delete', id: id, password: password })
-                });
+                const url = GOOGLE_SCRIPT_URL + `?action=delete&id=${id}&password=${encodeURIComponent(password)}`;
+                const res = await fetch(url);
                 const result = await res.json();
                 
                 if (result.result === 'success') {
                     alert("성공적으로 삭제되었습니다.");
                     closeDeleteModal();
-                    await fetchMessages(); // 삭제 후 새로고침
+                    await fetchMessages(); 
                 } else {
                     alert("비밀번호가 일치하지 않습니다.");
                 }
