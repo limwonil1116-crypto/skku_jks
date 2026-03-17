@@ -50,6 +50,7 @@
     <audio id="bgm" loop preload="auto" autoplay>
         <source src="https://archive.org/download/CanonInD_261/CanoninD.mp3" type="audio/mpeg">
     </audio>
+
     <button id="music-control" onclick="toggleMusic()" title="음악 재생/정지">🔇</button>
 
     <nav class="fixed top-0 w-full z-50 flex flex-col shadow-sm font-sans">
@@ -173,8 +174,8 @@
                 <p class="text-gray-600 max-w-2xl mx-auto mb-4 text-sm md:text-base">아름다웠던 퇴임식 현장의 감동을 사진첩처럼 넘겨보실 수 있습니다.</p>
                 
                 <div class="flex flex-wrap justify-center gap-3 mt-4">
-                    <a href="여기에_사진_링크_넣기" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-skku-green text-royal-gold px-6 py-2.5 rounded-full font-bold hover:bg-skku-green-dark transition-colors shadow-md text-sm md:text-base font-sans">
-                        <span>💾 전체 사진 다운로드</span>
+                    <a href="https://drive.google.com/drive/folders/176LkZEW8UifDTZOfROhUdoUNlBMplaJw?usp=sharing" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-skku-green text-royal-gold px-6 py-2.5 rounded-full font-bold hover:bg-skku-green-dark transition-colors shadow-md text-sm md:text-base font-sans">
+                        <span>💾 전체 사진 일괄 다운로드</span>
                     </a>
                     <button onclick="sharePage()" class="inline-flex items-center gap-2 bg-[#FEE500] text-[#000000] px-6 py-2.5 rounded-full font-bold hover:bg-[#FADA0A] transition-colors shadow-md text-sm md:text-base font-sans">
                         <span>💬 페이지 공유하기</span>
@@ -185,9 +186,12 @@
             <div class="max-w-6xl mx-auto fade-in mt-8">
                 <div class="relative overflow-hidden rounded-xl shadow-xl bg-gray-100 border border-gray-200 group aspect-[4/3] md:aspect-[16/9]">
                     <div id="gallery-track" class="flex transition-transform duration-500 ease-in-out h-full w-full bg-black"></div>
-                    <button onclick="moveGallery(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
-                    <button onclick="moveGallery(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
-                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3" id="gallery-dots"></div>
+                    <button onclick="moveGallery(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition z-10"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+                    <button onclick="moveGallery(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 md:p-3 rounded-full hover:bg-royal-gold opacity-0 group-hover:opacity-100 transition z-10"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 md:w-8 md:h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+                    
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 text-white px-4 py-1.5 rounded-full text-sm font-bold tracking-widest z-10">
+                        <span id="gallery-counter">1 / 25</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -266,7 +270,7 @@
     </div>
 
     <script>
-        // 🚨 [수작업 3] 아래 주소를 삭제하지 말고 그대로 두시면 됩니다!
+        // 🚨 [수작업 3] 기존 웹앱 URL을 그대로 유지합니다.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFlykmVJqBrDFLacYgb9PuUAhyFXIZr3q0h0oWrIZzbPXZZ5rqnUB5Zs9yp-LK7k28/exec';
 
         let guestbookMessages = []; 
@@ -292,7 +296,7 @@
             fetchMessages(); 
         });
 
-        // 공유하기 기능 (스마트폰 카톡 연결 등)
+        // 카톡 및 모바일 기기 기본 공유 기능
         function sharePage() {
             const shareData = {
                 title: '전경수 교수님 정년퇴임 기념관',
@@ -303,7 +307,7 @@
                 navigator.share(shareData).catch(console.error);
             } else {
                 navigator.clipboard.writeText(window.location.href).then(() => {
-                    alert('페이지 링크가 복사되었습니다! 카카오톡 등에 붙여넣기 해주세요.');
+                    alert('페이지 링크가 복사되었습니다! 카카오톡 등 원하는 곳에 붙여넣기 해주세요.');
                 });
             }
         }
@@ -325,29 +329,28 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
-        const photoList = [ 'photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg' ];
-        let currentGalleryIndex = 0; let totalGallerySlides = photoList.length;
+        // --- 🌟 갤러리 스마트 로직 (25장 전용) 🌟 ---
+        const totalGallerySlides = 25; 
+        const photoList = Array.from({length: totalGallerySlides}, (_, i) => `photo${i + 1}.jpg`);
+        let currentGalleryIndex = 0; 
 
         function initGallery() {
-            const track = document.getElementById('gallery-track'); const dotsContainer = document.getElementById('gallery-dots');
-            track.innerHTML = ''; dotsContainer.innerHTML = '';
-            photoList.forEach((photoFileName, index) => {
-                const slide = document.createElement('div'); slide.className = 'min-w-full h-full flex items-center justify-center bg-black relative';
-                slide.innerHTML = `<img src="./${photoFileName}" alt="갤러리 사진" class="w-full h-full object-contain">`;
+            const track = document.getElementById('gallery-track'); 
+            track.innerHTML = ''; 
+            
+            photoList.forEach((photoFileName) => {
+                const slide = document.createElement('div'); 
+                slide.className = 'min-w-full h-full flex items-center justify-center bg-black relative';
+                // 로딩 속도를 높이는 레이지 로딩 추가
+                slide.innerHTML = `<img src="./${photoFileName}" alt="갤러리 사진" loading="lazy" class="w-full h-full object-contain">`;
                 track.appendChild(slide);
-                const dot = document.createElement('button');
-                dot.className = index === 0 ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/50 hover:bg-white';
-                dot.onclick = () => setGallery(index); dotsContainer.appendChild(dot);
             });
             updateGalleryUI();
         }
 
         function updateGalleryUI() {
             document.getElementById('gallery-track').style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
-            const dots = document.getElementById('gallery-dots').children;
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = i === currentGalleryIndex ? 'w-3 h-3 rounded-full bg-royal-gold' : 'w-3 h-3 rounded-full bg-white/50 hover:bg-white';
-            }
+            document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${totalGallerySlides}`;
         }
 
         function moveGallery(dir) {
@@ -356,10 +359,8 @@
             if (currentGalleryIndex < 0) currentGalleryIndex = totalGallerySlides - 1;
             updateGalleryUI();
         }
-        function setGallery(index) { currentGalleryIndex = index; updateGalleryUI(); }
 
         // --- 🌟 JSONP 방식 방명록 통신 🌟 ---
-        
         function fetchMessages() {
             if(!GOOGLE_SCRIPT_URL.startsWith('http')) return; 
             const cb = 'jsonp_read_' + Date.now();
@@ -461,7 +462,7 @@
             setTimeout(() => { if (document.body.contains(s)) document.body.removeChild(s); }, 1000);
         }
 
-        // 🌟 [핵심] 숫자가 들어와도 문자열로 안전하게 변환하여 에러 방지
+        // 🌟 엑셀에서 날아온 어떤 숫자/기호라도 에러 나지 않게 방어!
         function escapeHTML(str) { 
             if (str === null || str === undefined) return '';
             return String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'}[tag] || tag)); 
