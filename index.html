@@ -203,7 +203,7 @@
             <div class="w-12 h-1 bg-royal-gold mx-auto mb-4"></div>
             <p class="text-gray-300 mb-8 text-sm md:text-base">존경을 담아 제작한 헌정 영상 및 퇴임식 당일의 기록입니다.</p>
 
-            <a href="https://drive.google.com/file/d/1GobCraIuzPWzFEemLMowW96yAaouoiYJ/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="block bg-skku-green-dark border border-royal-gold/40 rounded-xl p-8 hover:bg-[#001f19] transition-all shadow-2xl group cursor-pointer max-w-xl mx-auto">
+            <a href="https://drive.google.com/file/d/1GobCraIuzPWzFEemLMowW96yAaouoiYJ/view?usp=sharing" target="_blank" rel="noopener noreferrer" onclick="pauseBgmForVideo()" class="block bg-skku-green-dark border border-royal-gold/40 rounded-xl p-8 hover:bg-[#001f19] transition-all shadow-2xl group cursor-pointer max-w-xl mx-auto">
                 <div class="w-16 h-16 mx-auto bg-royal-gold text-skku-green rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="text-2xl ml-1">▶</span></div>
                 <h3 class="text-xl font-bold mb-1 text-white font-sans">퇴임 기념 영상 시청하기</h3>
                 <p class="text-royal-gold/70 text-xs font-sans">Google Drive로 연결됩니다</p>
@@ -270,7 +270,6 @@
     </div>
 
     <script>
-        // 🚨 [수작업 3] 기존 웹앱 URL을 그대로 유지합니다.
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFlykmVJqBrDFLacYgb9PuUAhyFXIZr3q0h0oWrIZzbPXZZ5rqnUB5Zs9yp-LK7k28/exec';
 
         let guestbookMessages = []; 
@@ -296,7 +295,7 @@
             fetchMessages(); 
         });
 
-        // 카톡 및 모바일 기기 기본 공유 기능
+        // 공유하기 기능
         function sharePage() {
             const shareData = {
                 title: '전경수 교수님 정년퇴임 기념관',
@@ -312,12 +311,24 @@
             }
         }
 
+        // BGM 컨트롤
         let isMusicPlaying = false;
         function toggleMusic() {
             const bgm = document.getElementById('bgm');
             const musicControl = document.getElementById('music-control');
             if (isMusicPlaying) { bgm.pause(); musicControl.innerHTML = '🔇'; isMusicPlaying = false; } 
             else { bgm.play(); musicControl.innerHTML = '🎵'; isMusicPlaying = true; }
+        }
+
+        // 🌟 [추가됨] 영상 클릭 시 BGM 일시정지 함수
+        function pauseBgmForVideo() {
+            const bgm = document.getElementById('bgm');
+            const musicControl = document.getElementById('music-control');
+            if (isMusicPlaying) { 
+                bgm.pause(); 
+                musicControl.innerHTML = '🔇'; 
+                isMusicPlaying = false; 
+            }
         }
 
         function startExperience() {
@@ -329,7 +340,7 @@
             window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
         }
 
-        // --- 🌟 갤러리 스마트 로직 (25장 전용) 🌟 ---
+        // 갤러리 슬라이더 로직
         const totalGallerySlides = 25; 
         const photoList = Array.from({length: totalGallerySlides}, (_, i) => `photo${i + 1}.jpg`);
         let currentGalleryIndex = 0; 
@@ -341,7 +352,6 @@
             photoList.forEach((photoFileName) => {
                 const slide = document.createElement('div'); 
                 slide.className = 'min-w-full h-full flex items-center justify-center bg-black relative';
-                // 로딩 속도를 높이는 레이지 로딩 추가
                 slide.innerHTML = `<img src="./${photoFileName}" alt="갤러리 사진" loading="lazy" class="w-full h-full object-contain">`;
                 track.appendChild(slide);
             });
@@ -360,7 +370,7 @@
             updateGalleryUI();
         }
 
-        // --- 🌟 JSONP 방식 방명록 통신 🌟 ---
+        // JSONP 방식 방명록 통신
         function fetchMessages() {
             if(!GOOGLE_SCRIPT_URL.startsWith('http')) return; 
             const cb = 'jsonp_read_' + Date.now();
@@ -462,7 +472,6 @@
             setTimeout(() => { if (document.body.contains(s)) document.body.removeChild(s); }, 1000);
         }
 
-        // 🌟 엑셀에서 날아온 어떤 숫자/기호라도 에러 나지 않게 방어!
         function escapeHTML(str) { 
             if (str === null || str === undefined) return '';
             return String(str).replace(/[&<>'"]/g, tag => ({'&': '&amp;','<': '&lt;','>': '&gt;',"'": '&#39;','"': '&quot;'}[tag] || tag)); 
