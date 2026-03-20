@@ -201,16 +201,19 @@
     </section>
 
     <section id="video" class="py-16 md:py-20 bg-skku-green text-white relative">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in relative z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in relative z-10">
             <h2 class="text-3xl font-bold text-royal-gold mb-3">기념 영상</h2>
             <div class="w-12 h-1 bg-royal-gold mx-auto mb-4"></div>
             <p class="text-gray-300 mb-8 text-sm md:text-base">존경을 담아 제작한 헌정 영상 및 퇴임식 당일의 기록입니다.</p>
 
-            <a href="https://drive.google.com/file/d/1GobCraIuzPWzFEemLMowW96yAaouoiYJ/view?usp=sharing" target="_blank" rel="noopener noreferrer" onclick="pauseBgmForVideo()" class="block bg-skku-green-dark border border-royal-gold/40 rounded-xl p-8 hover:bg-[#001f19] transition-all shadow-2xl group cursor-pointer max-w-xl mx-auto">
-                <div class="w-16 h-16 mx-auto bg-royal-gold text-skku-green rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><span class="text-2xl ml-1">▶</span></div>
-                <h3 class="text-xl font-bold mb-1 text-white font-sans">퇴임 기념 영상 시청하기</h3>
-                <p class="text-royal-gold/70 text-xs font-sans">Google Drive로 연결됩니다</p>
-            </a>
+            <div class="max-w-5xl mx-auto rounded-xl overflow-hidden shadow-2xl bg-black aspect-[16/9] relative" onmouseenter="pauseBgmForVideo()" onclick="pauseBgmForVideo()" ontouchstart="pauseBgmForVideo()">
+                <iframe src="https://drive.google.com/file/d/1GobCraIuzPWzFEemLMowW96yAaouoiYJ/preview"
+                        class="absolute top-0 left-0 w-full h-full border-0"
+                        allow="autoplay"
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <p class="text-gray-400 mt-4 text-xs md:text-sm">* 원활한 영상 시청을 위해 영상 영역을 터치(클릭)하면 배경음악이 자동으로 일시정지됩니다.</p>
         </div>
     </section>
 
